@@ -30,8 +30,8 @@ def train_model(
     rng = np.random.default_rng(seed)
 
     # Create objects
-    # dataset = data.two_moons(num_data)
-    dataset = data.two_moons_full(num_data)
+    dataset = data.two_moons(num_data)
+    # dataset = data.two_moons_full(num_data)
     diffusion = sde.VPSDE(schedule_type)
     network = nw.Network(x_dim, hidden_dim, activation_cls)
     loss_function = ls.DSM_Loss()
@@ -103,6 +103,19 @@ def save_model(model, filename=None):
 
     model.save(filename)
     print(f"Model saved to {filename}")
+
+
+def load_model(filename=None):
+    if filename is None:
+        filename = config.MODEL_FILE
+
+    model = nw.Network(config.X_DIM, config.HIDDEN_DIM)
+    model.load(filename)
+
+    print(f"Model loaded from {filename}")
+    # print(model.training_config)
+
+    return model
 
 
 if __name__ == "__main__":
